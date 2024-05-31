@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>【跑步】步频、步幅、时间 计算器</title>
 	<meta name="description" content="步频、步幅、时间 计算器" />
 	<link rel="shortcut icon" href="run.ico" />
@@ -10,7 +11,7 @@
 </head>
 
 <body>
-<div id="root" class="container">
+<div id="root" class="container hidden">
 <!--计算步幅-->
 <div class="row">
 	<div class="col-sm-12">
@@ -145,7 +146,7 @@
 			<p><span>跑多少公里（整数）</span><input type="text" placeholder="" id="txtgongli" style="width:60px;text-align: center" maxlength="2" class="doc bordered"></p>
 			<div id="divmsg3" class="card warning hidden"><div id="divmsgtext3" class="section"></div></div>
 			<button class="secondary bordered doc small" onclick="calctime()">点击 计算时间</button>						
-			<p><mark id="spangongli" class="secondary hidden" style="font-size: 1.2em;">&nbsp;<span id="spangonglinumber"></span>&nbsp;</mark></p>			
+			<p><mark id="spangongli" class="secondary hidden" style="font-size: 1.2em;">&nbsp;<span id="spangonglinumber"></span>&nbsp;</mark></p>
 		</div>
 		</div>
 	</div>
@@ -155,6 +156,15 @@
 </div>
 
 <script>
+	function isWeiXin() {
+		var ua = window.navigator.userAgent.toLowerCase();		
+		if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	if (isWeiXin()) {document.querySelector("#root").classList.remove("hidden");}else{document.querySelector("body").textContent='请在微信中浏览';}
 	function calcbufu(){let e=Number.parseInt(document.querySelector("#selkilosecond").value);if(e<=0)return void setError(!0,"请选择配速");let t=Number.parseInt(document.querySelector("#txtbupin").value);if(Number.isNaN(t)||t<=0)return void setError(!0,"请输入整数步频");let r=Math.floor(1e3/(e*t/60)*100);document.querySelector("#spanbufunumber").textContent=r,document.querySelector("#spanbufu").classList.remove("hidden"),setError(!1)}function setError(e,t){if(e)document.querySelector("#divmsgtext").textContent=t,document.querySelector("#divmsg").classList.remove("hidden");else{let e=document.querySelector("#divmsg").classList;e.remove("hidden"),e.add("hidden")}}function calcbupin(){let e=Number.parseInt(document.querySelector("#selkilosecond2").value);if(e<=0)return void setError2(!0,"请选择配速");let t=Number.parseInt(document.querySelector("#txtbufu").value);if(Number.isNaN(t)||t<=0)return void setError2(!0,"请输入整数步幅");let r=Math.floor(1e3/(e*t/60)*100);document.querySelector("#spanbupinnumber").textContent=r,document.querySelector("#spanbupin").classList.remove("hidden"),setError2(!1)}function setError2(e,t){if(e)document.querySelector("#divmsgtext2").textContent=t,document.querySelector("#divmsg2").classList.remove("hidden");else{let e=document.querySelector("#divmsg2").classList;e.remove("hidden"),e.add("hidden")}}function calctime(){let e=Number.parseInt(document.querySelector("#selkilosecond3").value);if(e<=0)return void setError3(!0,"请选择配速");let t=Number.parseInt(document.querySelector("#txtgongli").value);if(Number.isNaN(t)||t<=0)return void setError3(!0,"请输入整数公里");let r=calcKilometerSpeed2(t,e);document.querySelector("#spangonglinumber").textContent=r,document.querySelector("#spangongli").classList.remove("hidden"),setError3(!1)}function setError3(e,t){if(e)document.querySelector("#divmsgtext3").textContent=t,document.querySelector("#divmsg3").classList.remove("hidden");else{let e=document.querySelector("#divmsg3").classList;e.remove("hidden"),e.add("hidden")}}function calcKilometerSpeed2(e,t){let r=formatSecond(e*t),o="";return"需要："+(o=0==r.minutes&&0==r.seconds?r.hours+" 小时整":r.minutes>0&&0==r.seconds?(r.hours>0?r.hours+" 小时 ":"")+r.minutes.toString().padStart(2,"0")+" 分整":0==r.minutes&&r.seconds>0?(r.hours>0?r.hours+" 小时 ":"")+r.seconds.toString().padStart(2,"0")+" 秒整":(r.hours>0?r.hours+" 小时 ":"")+r.minutes.toString().padStart(2,"0")+" 分 "+r.seconds.toString().padStart(2,"0")+" 秒")}function formatSecond(e){return{allMinutes:Math.floor(e/60),days:Math.floor(e/86400),hours:Math.floor(e%86400/3600),minutes:Math.floor(e%86400%3600/60),seconds:Math.floor(e%86400%3600%60)}}
 </script>
 
